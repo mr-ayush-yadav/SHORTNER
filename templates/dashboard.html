@@ -1,0 +1,16 @@
+<h2>Welcome {{ current_user.username }}</h2>
+
+<form method="POST">
+  <input name="url" placeholder="Enter URL">
+  <button>Shorten</button>
+</form>
+
+<h3>Your Links</h3>
+{% for u in urls %}
+<p>
+  {{ u.original }} →
+  <a href="/{{ u.short }}">{{ u.short }}</a>
+</p>
+{% endfor %}
+
+<a href="/logout">Logout</a>
