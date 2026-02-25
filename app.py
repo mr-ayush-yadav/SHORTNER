@@ -9,7 +9,9 @@ app.config['SECRET_KEY'] = 'secretkey'
 app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///database.db'
 
 db = SQLAlchemy(app)
-login_manager = LoginManager(app)
+
+with app.app_context():
+    db.create_all()
 
 # ------------------
 # Database Models
@@ -90,12 +92,7 @@ def logout():
 if __name__ == "__main__":
     with app.app_context():
         db.create_all()
-    import os
-
-if __name__ == "__main__":
-    with app.app_context():
-        db.create_all()
-    app.run(host="0.0.0.0", port=int(os.environ.get("PORT", 5000)))from flask import jsonify
+    app.run(host="0.0.0.0", port=int(os.environ.get("PORT", 5000)))
 
 @app.route("/api/shorten", methods=["POST"])
 def api_shorten():
