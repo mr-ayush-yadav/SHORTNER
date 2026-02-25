@@ -95,4 +95,18 @@ if __name__ == "__main__":
 if __name__ == "__main__":
     with app.app_context():
         db.create_all()
-    app.run(host="0.0.0.0", port=int(os.environ.get("PORT", 5000)))
+    app.run(host="0.0.0.0", port=int(os.environ.get("PORT", 5000)))from flask import jsonify
+
+@app.route("/api/shorten", methods=["POST"])
+def api_shorten():
+    data = request.json
+    long_url = data.get("url")
+
+    short = generate_short()
+    new_url = URL(original=long_url, short=short, user_id=1)
+    db.session.add(new_url)
+    db.session.commit()
+
+    return jsonify({
+        "short_url": f"https://shortner-qmsc.onrender.com/{short}"
+    })

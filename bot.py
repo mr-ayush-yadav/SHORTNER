@@ -16,7 +16,7 @@ async def shorten(update: Update, context: ContextTypes.DEFAULT_TYPE):
         db.session.add(new_url)
         db.session.commit()
 
-    short_url = f"http://127.0.0.1:5000/{short}"
+    short_url = f"https://shortner-qmsc.onrender.com/{short}"
     await update.message.reply_text(f"Short URL: {short_url}")
 
 app_bot = ApplicationBuilder().token(TOKEN).build()
