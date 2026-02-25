@@ -1,23 +1,30 @@
 from telegram import Update
 from telegram.ext import ApplicationBuilder, CommandHandler, MessageHandler, filters, ContextTypes
-from app import db, URL, generate_short, app as flask_app
+import requests
 
-TOKEN = "8256929214:AAEhZsOKWczsXqC1GSWFZXZUS-X-kbwuyOM"
+TOKEN = "8256929214:AAEATXLNEayFnysqLT8RCu4HqrkhQ7DKwoo"
+
+RENDER_URL = "https://shortner-qmsc.onrender.com"
 
 async def start(update: Update, context: ContextTypes.DEFAULT_TYPE):
-    await update.message.reply_text("Welcome! Apna link bhejo short karne ke liye.")
+    await update.message.reply_text("Welcome! Send me a long link to shorten.")
 
 async def shorten(update: Update, context: ContextTypes.DEFAULT_TYPE):
     long_url = update.message.text
-    
-    with flask_app.app_context():
-        short = generate_short()
-        new_url = URL(original=long_url, short=short, user_id=1)
-        db.session.add(new_url)
-        db.session.commit()
 
-    short_url = f"https://shortner-qmsc.onrender.com/{short}"
-    await update.message.reply_text(f"Short URL: {short_url}")
+    try:
+        response = requests.post(
+            f"{RENDER_URL}/api/shorten",
+            json={"url": long_url}
+        )
+
+        if response.status_code == 200:
+            short_url = response.json()["short_url"]
+            await update.message.reply_text(f"Short URL: {short_url}")
+        else:
+            await update.message.reply_text("Error generating short link.")
+    except Exception as e:
+        await update.message.reply_text("Server error.")
 
 app_bot = ApplicationBuilder().token(TOKEN).build()
 
