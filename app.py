@@ -51,14 +51,6 @@ def generate_short():
 def home():
     return render_template("index.html")
 
-@app.route("/<short>")
-def redirect_url(short):
-    link = URL.query.filter_by(short=short).first()
-    if link:
-        link.clicks += 1
-        db.session.commit()
-        return redirect(link.original)
-    return "Link Not Found ❌"
 
 @app.route("/stats/<short>")
 def stats(short):
@@ -183,6 +175,15 @@ def login_browser():
         """
 
     return result
+
+@app.route("/<short>")
+def redirect_url(short):
+    link = URL.query.filter_by(short=short).first()
+    if link:
+        link.clicks += 1
+        db.session.commit()
+        return redirect(link.original)
+    return "Link Not Found ❌"
 
 if __name__ == "__main__":
     app.run(debug=True)
