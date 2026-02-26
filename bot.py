@@ -2,7 +2,7 @@ from telegram import Update
 from telegram.ext import ApplicationBuilder, CommandHandler, MessageHandler, filters, ContextTypes
 import requests
 
-TOKEN = "8256929214:AAEATXLNEayFnysqLT8RCu4HqrkhQ7DKwoo"
+TOKEN = "8229351801:AAFXFczAcP9pl1-prbLAzrT2ypH_qhQCZ1c"
 
 RENDER_URL = "https://shortner-qmsc.onrender.com"
 

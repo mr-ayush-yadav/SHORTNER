@@ -1,0 +1,197 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Shortner Pro</title>
+
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&display=swap" rel="stylesheet">
+
+<style>
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: 'Poppins', sans-serif;
+}
+
+body {
+    background: linear-gradient(-45deg, #667eea, #764ba2, #6a11cb, #2575fc);
+    background-size: 400% 400%;
+    animation: gradientMove 10s ease infinite;
+    color: white;
+}
+
+@keyframes gradientMove {
+    0% {background-position: 0% 50%;}
+    50% {background-position: 100% 50%;}
+    100% {background-position: 0% 50%;}
+}
+
+.container {
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+nav {
+    width: 100%;
+    padding: 20px 10%;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+nav h2 {
+    font-weight: 700;
+}
+
+.hero {
+    flex: 1;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-direction: column;
+    text-align: center;
+}
+
+.hero h1 {
+    font-size: 42px;
+    margin-bottom: 20px;
+}
+
+.hero p {
+    opacity: 0.8;
+    margin-bottom: 30px;
+}
+
+.card {
+    background: rgba(255,255,255,0.1);
+    backdrop-filter: blur(15px);
+    padding: 30px;
+    border-radius: 20px;
+    width: 400px;
+    box-shadow: 0 8px 32px rgba(0,0,0,0.3);
+}
+
+input {
+    width: 100%;
+    padding: 12px;
+    border-radius: 10px;
+    border: none;
+    margin-bottom: 15px;
+}
+
+button {
+    width: 100%;
+    padding: 12px;
+    border-radius: 10px;
+    border: none;
+    background: white;
+    color: #333;
+    font-weight: 600;
+    cursor: pointer;
+    transition: 0.3s;
+}
+
+button:hover {
+    background: #ddd;
+}
+
+.result {
+    margin-top: 15px;
+    word-break: break-all;
+}
+
+.features {
+    padding: 60px 10%;
+    display: flex;
+    justify-content: space-around;
+    flex-wrap: wrap;
+    gap: 30px;
+}
+
+.feature-box {
+    background: rgba(255,255,255,0.1);
+    padding: 25px;
+    border-radius: 15px;
+    width: 250px;
+    backdrop-filter: blur(10px);
+    text-align: center;
+}
+
+footer {
+    padding: 20px;
+    text-align: center;
+    opacity: 0.7;
+}
+</style>
+</head>
+<body>
+
+<div class="container">
+
+<nav>
+<h2>Shortner Pro 🚀</h2>
+<span>Fast • Secure • Simple</span>
+</nav>
+
+<div class="hero">
+<h1>Shorten Your Links Instantly</h1>
+<p>Fast, secure & beautiful URL shortener</p>
+
+<div class="card">
+<input type="text" id="urlInput" placeholder="Paste your long URL here...">
+<button onclick="shortenURL()">Shorten Now</button>
+<div class="result" id="result"></div>
+</div>
+</div>
+
+<div class="features">
+<div class="feature-box">
+<h3>⚡ Lightning Fast</h3>
+<p>Generate short links instantly</p>
+</div>
+<div class="feature-box">
+<h3>🔒 Secure</h3>
+<p>Safe redirect system</p>
+</div>
+<div class="feature-box">
+<h3>🌍 Global Access</h3>
+<p>Access anywhere in the world</p>
+</div>
+</div>
+
+<footer>
+© 2026 Shortner Pro. Built by AYUSH 💎
+</footer>
+
+</div>
+
+<script>
+function shortenURL() {
+    const url = document.getElementById("urlInput").value;
+
+    fetch("/api/shorten", {
+        method: "POST",
+        headers: {"Content-Type": "application/json"},
+        body: JSON.stringify({url: url})
+    })
+    .then(res => res.json())
+    .then(data => {
+        document.getElementById("result").innerHTML =
+        `<a href="${data.short_url}" target="_blank" style="color:white;">${data.short_url}</a>
+        <br><br>
+        <button onclick="copyLink('${data.short_url}')">Copy Link</button>`;
+    });
+}
+
+function copyLink(link) {
+    navigator.clipboard.writeText(link);
+    alert("Copied to clipboard!");
+}
+</script>
+
+</body>
+</html>

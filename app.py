@@ -1,4 +1,4 @@
-from flask import Flask, request, redirect, jsonify
+from flask import Flask, request, redirect, jsonify, render_template
 from flask_sqlalchemy import SQLAlchemy
 import string
 import random
@@ -42,7 +42,7 @@ def generate_short():
 
 @app.route("/")
 def home():
-    return "Shortner is Running 🚀"
+    return render_template("index.html")
 
 @app.route("/<short>")
 def redirect_url(short):
